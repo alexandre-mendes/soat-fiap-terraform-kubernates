@@ -1,3 +1,12 @@
+terraform {
+  backend "s3" {
+    bucket  = "soat-terraform-state-5dc9264c8c230a834fe2a59b744523fd"
+    key     = "kubernates/terraform.tfstate"
+    region  = "us-east-1"
+    encrypt = true
+  }
+}
+
 module "vpc" {
   source  = "terraform-aws-modules/vpc/aws"
   version = "5.1.2"
@@ -10,12 +19,13 @@ module "vpc" {
 
   enable_dns_hostnames = true
   enable_dns_support   = true
+  map_public_ip_on_launch  = true
 }
 
 resource "aws_eks_cluster" "eks" {
   name     = var.cluster_name
   role_arn = var.lab_role_arn
-  version  = "1.29"
+  version  = "1.32"
 
   vpc_config {
     subnet_ids = module.vpc.public_subnets

@@ -1,4 +1,4 @@
-name: Deploy EKS via Terraform
+name: Terraform Apply - EKS
 
 on:
   workflow_dispatch:
