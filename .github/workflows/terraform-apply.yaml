@@ -1,4 +1,4 @@
-name: Deploy Infra + App
+name: Terraform Apply - EKS
 
 on:
   push:
