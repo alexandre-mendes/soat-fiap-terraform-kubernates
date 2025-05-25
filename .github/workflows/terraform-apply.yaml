@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
   push:
     branches:
-      - main
+      - master
 
 jobs:
   deploy:
@@ -33,6 +33,12 @@ jobs:
 
       - name: Terraform Init
         run: terraform init
+
+      - name: Validar Terraform
+        run: terraform validate
+
+      - name: Terraform Plan
+        run: terraform plan -out=tfplan
 
       - name: Terraform Apply
         run: terraform apply -auto-approve
