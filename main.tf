@@ -14,16 +14,22 @@ module "vpc" {
   name = "eks-vpc"
   cidr = "10.0.0.0/16"
 
-  azs             = ["us-east-1a", "us-east-1b"]
-  public_subnets  = ["10.0.1.0/24", "10.0.2.0/24"]
+  azs            = ["us-east-1a", "us-east-1b"]
+  public_subnets = ["10.0.1.0/24", "10.0.2.0/24"]
 
   enable_nat_gateway = false
   enable_vpn_gateway = false
+
+  public_subnet_tags = {
+    "kubernetes.io/role/elb"             = "1"
+    "kubernetes.io/cluster/soat-cluster" = "shared"
+    "map_public_ip_on_launch"            = "true"
+  }
 }
 
 module "eks" {
-  source          = "terraform-aws-modules/eks/aws"
-  version         = "20.8.4"
+  source  = "terraform-aws-modules/eks/aws"
+  version = "20.8.4"
 
   cluster_name    = "soat-cluster"
   cluster_version = "1.29"
