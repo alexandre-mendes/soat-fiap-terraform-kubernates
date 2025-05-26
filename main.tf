@@ -17,23 +17,15 @@ module "vpc" {
   azs            = ["us-east-1a", "us-east-1b"]
   public_subnets = ["10.0.1.0/24", "10.0.2.0/24"]
 
+  map_public_ip_on_launch = true 
+
   enable_nat_gateway = false
   enable_vpn_gateway = false
 
   public_subnet_tags = {
     "kubernetes.io/role/elb"             = "1"
     "kubernetes.io/cluster/soat-cluster" = "shared"
-    "map_public_ip_on_launch"            = "true"
   }
-
-
-}
-
-resource "aws_subnet_public_ip_auto_assign" "enable_public_ip" {
-  for_each  = toset(module.vpc.public_subnets)
-  subnet_id = each.value
-
-  auto_assign_public_ip = true
 }
 
 module "eks" {
