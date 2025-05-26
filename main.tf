@@ -25,6 +25,15 @@ module "vpc" {
     "kubernetes.io/cluster/soat-cluster" = "shared"
     "map_public_ip_on_launch"            = "true"
   }
+
+
+}
+
+resource "aws_subnet_public_ip_auto_assign" "enable_public_ip" {
+  for_each  = toset(module.vpc.public_subnets)
+  subnet_id = each.value
+
+  auto_assign_public_ip = true
 }
 
 module "eks" {
